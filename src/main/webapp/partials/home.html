@@ -46,6 +46,15 @@
                 <input type="tel" name="phoneNumber" id="phoneNumber" ng-model="newMember.phoneNumber" pattern="[0-9]{10,12}" placeholder="Your Phone #" required/>
                 <span class="error" ng-show="errors.phoneNumber">{{errors.phoneNumber}}</span>
             </div>
+            <div>
+                <label for="address">Address :</label>
+                <input type="text" name="address" id="address" ng-model="newMember.address" placeholder="Your Address" required/>
+                <span class="error" ng-show="errors.address">{{errors.address}}</span>
+            </div>
+
+            <ul  class="error">
+                <span class="error" ng-show="errors.validation">{{errors.validation}}</span>
+            </ul>
 
             <!-- We output a list of success messages (appropriately styled!) for the form. -->
             <ul ng-hide="!successMessages" class="success">
@@ -61,7 +70,7 @@
             <div>
                 <input type="submit" id="register" value="Register" />
                 <input type="button" ng-click="reset()" name="cancel"
-                    id="cancel" value="Cancel" />
+                       id="cancel" value="Cancel" />
             </div>
         </fieldset>
     </form>
@@ -72,13 +81,14 @@
     <em ng-show="members.length == 0">No registered members.</em>
     <table ng-hide="members.length == 0" class="simpletablestyle">
         <thead>
-            <tr>
-                <th>Id</th>
-                <th>Name</th>
-                <th>Email</th>
-                <th>Phone #</th>
-                <th>REST URL</th>
-            </tr>
+        <tr>
+            <th>Id</th>
+            <th>Name</th>
+            <th>Email</th>
+            <th>Phone #</th>
+            <th>Address</th>
+            <th>REST URL</th>
+        </tr>
         </thead>
         <!-- The table is built using the AngularJS repeat function, iterating over the members variable, and ordering by the property specified in the orderBy variable -->
         <tr ng-repeat="member in members | orderBy:orderBy">
@@ -86,6 +96,7 @@
             <td>{{member.name}}</td>
             <td>{{member.email}}</td>
             <td>{{member.phoneNumber}}</td>
+            <td>{{member.address}}</td>
             <td><a href="rest/members/{{member.id}}">/rest/members/{{member.id}}</a>
             </td>
     </table>
@@ -95,6 +106,6 @@
     <div>
         <!-- The table has a button to manually refresh the values, in case, for example, someone else adds a member -->
         <input type="button" ng-click="refresh()" name="refresh"
-            id="refresh" value="Refresh" />
+               id="refresh" value="Refresh" />
     </div>
 </div>

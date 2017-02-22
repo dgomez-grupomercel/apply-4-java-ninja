@@ -107,7 +107,7 @@ public class MemberResourceRESTService {
         } catch (ValidationException e) {
             // Handle the unique constrain violation
             Map<String, String> responseObj = new HashMap<>();
-            responseObj.put("email", "Email taken");
+            responseObj.put("validation", "Email address and Name must be uniques");
             builder = Response.status(Response.Status.CONFLICT).entity(responseObj);
         } catch (Exception e) {
             // Handle generic exceptions
@@ -145,6 +145,11 @@ public class MemberResourceRESTService {
         if (emailAlreadyExists(member.getEmail())) {
             throw new ValidationException("Unique Email Violation");
         }
+
+        // Check the uniqueness of the name
+        if (nameAlreadyExists(member.getName())) {
+            throw new ValidationException("Unique Name Violation");
+        }
     }
 
     /**
@@ -177,6 +182,23 @@ public class MemberResourceRESTService {
         Member member = null;
         try {
             member = repository.findByEmail(email);
+        } catch (NoResultException e) {
+            // ignore
+        }
+        return member != null;
+    }
+
+
+    /**
+     * Check about the member already registred
+     *
+     * @param name The name to check
+     * @return Return true if the member already exist or false otherwise
+     */
+    public boolean nameAlreadyExists(String name) {
+        Member member = null;
+        try {
+            member = repository.findByName(name);
         } catch (NoResultException e) {
             // ignore
         }
